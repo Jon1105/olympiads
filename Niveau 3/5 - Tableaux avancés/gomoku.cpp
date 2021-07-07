@@ -1,13 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#define DEBUG
-
-void debugPrint(std::string label, int n) {
-  #ifdef DEBUG
-  std::cout << label << ": " << n << '\n';
-  #endif
-}
 
 enum pion {
   empty = 0,
@@ -75,12 +68,10 @@ pion gomoku(std::vector<std::vector<pion>> *board, size_t size) {
   for (size_t i = 0; i < size; i++) {
       pion row = checkRow(&(*board)[i]);
       if (row != empty) {
-        debugPrint("row",i);
         return row;
       }
       pion column = checkColumn(board,i);
       if (column != empty) {
-        debugPrint("column",i);
         return column;
       }
       // max starting column is size-5
@@ -88,16 +79,12 @@ pion gomoku(std::vector<std::vector<pion>> *board, size_t size) {
         if (i < size-4) {
           pion diagonal1 = checkDiagonal1(board, i, j);
           if (diagonal1 != empty) {
-            debugPrint("row(d1)",i);
-            debugPrint("col(d1)", j);
             return diagonal1;
           }
         }
         if (i > 4) {
           pion diagonal2 = checkDiagonal2(board, i, j);
           if (diagonal2 != empty) {
-            debugPrint("row(d2)",i);
-            debugPrint("col(d2)", j);
             return diagonal2;
           }
         }
