@@ -4,12 +4,13 @@
 
 #define boardSize 8
 
-class position {
-    public:
-        size_t row, column;
-        position(size_t row, size_t column) : row{row}, column{column}{};
+struct position {
+    size_t row, column;
+    position(size_t _col, size_t _row) {
+        column = _col;
+        row = _row;
+    }
 };
-
 
 std::vector<position> getKnightMoves(position pos) {
     // Note: it's not worth filtering the moves that are outside of the board
@@ -28,10 +29,13 @@ std::vector<position> getKnightMoves(position pos) {
 bool canEat(std::vector<position> knights, std::vector<position> pieces) {
     for (auto &&knight : knights) {
         for (auto &&knightMove : getKnightMoves(knight)) {
-            for (auto &&piece : pieces) {
-                if (piece.column == knightMove.column && piece.row == knightMove.row)
-                    return true;
+            if (knightMove.column >= 0 && knightMove.column < boardSize && knightMove.row >= 0 && knightMove.row < boardSize) {
+                for (auto &&piece : pieces) {
+                    if (piece.column == knightMove.column && piece.row == knightMove.row)
+                        return true;
+                }
             }
+            
         }
     }
     return false;
