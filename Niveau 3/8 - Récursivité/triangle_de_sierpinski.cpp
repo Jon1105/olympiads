@@ -18,8 +18,12 @@ void recur(std::vector<std::vector<bool>>* image, size_t repeat) {
 }
 
 
-int main(int argc, char const *argv[]) {
+int main() {
     size_t size; std::cin >> size;
+    if (size == 1) {
+        std::cout << '#' << '\n';
+        return 0;
+    }
     std::vector<std::vector<bool>> image = {
         {true, true},
         {true, false},
@@ -27,12 +31,12 @@ int main(int argc, char const *argv[]) {
 
     recur(&image, size/2);
 
-    for (auto &&i : image) {
-        for (auto &&j : i)
-            std::cout << (j ? '#' : ' ');
+    for (size_t i = 0; i < size; i++) {
+        for (size_t j = 0; j < size; j++) {
+            std::cout << (image[i][j] ? '#' : ' ');
+        }
         std::cout << '\n';
     }
     
-
     return 0;
 }
