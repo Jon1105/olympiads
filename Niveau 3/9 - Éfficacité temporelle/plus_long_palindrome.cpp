@@ -2,58 +2,46 @@
 #include <string>
 #define DEBUG
 
-void output(std::string label, int value, char indicator = '\0')
+// 1. Get all substrings
+// 2. Check if paldindrome
+// 		if yes: compare to max
+// return max
+
+bool isPalindrome(std::string entry)
 {
-	if (indicator == '\0')
-		std::cout << label << ": " << value << '\n';
-
-	else
-		std::cout << label << "(" << indicator << "): " << value << '\n';
-}
-
-// http://www.france-ioi.org/algo/task.php?idChapter=528&idTask=1171
-
-size_t palindromeLength(std::string s, size_t i)
-{
-	if (i == 0) // check if s[i-1] is invalid
-		return 1;
-	else if (s[i - 1] == s[i])
+	size_t n = entry.size();
+	if (n <= 1)
 	{
-		s.erase(s.begin() + i - 1, s.begin() + i + 1);
-		return 2 + palindromeLength(s, i - 1);
+		return true;
 	}
-	else if (i == s.size() - 1)
+	else if (entry[0] == entry[n - 1])
 	{
-		return 0;
+		return isPalindrome(entry.substr(1, n - 2));
 	}
-	else if (s[i - 1] == s[i + 1])
-	{
-		s.erase(s.begin() + i - 1);
-		s.erase(s.begin() + i + 1);
-		return 2 + palindromeLength(s, i - 1);
-	}
-	return 1;
+	return false;
 }
 
 int main(int argc, char const *argv[])
 {
 	std::string entry;
 
-#ifdef DEBUG
-	entry = "mollakayakokomassa";
-#else
-	std::cin >> entry;
-#endif
+	// entry = "mollakayakokomassa";
 
-	size_t count = 0;
-	for (size_t i = 0; i < entry.size(); i++)
+	std::cin >> entry;
+
+	size_t max = 0;
+	for (size_t start = 0; start < entry.size(); start++)
 	{
-		size_t temp = palindromeLength(entry, i);
-		output("temp", temp, entry[i]);
-		if (temp > count)
-			count = temp;
+		for (size_t len = 1; len < (entry.size() - start + 1); len++)
+		{
+			std::string sub = entry.substr(start, len);
+			if (isPalindrome(sub) && sub.size() > max)
+			{
+				// std::cout << sub << ": " << sub.size() << '\n';
+				max = sub.size();
+			}
+		}
 	}
-	output("Final Result", count);
-	// std::cout << count << '\n';
+	std::cout << max << '\n';
 	return 0;
 }
