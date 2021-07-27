@@ -1,25 +1,5 @@
 #include <iostream>
 #include <string>
-#define DEBUG
-
-// 1. Get all substrings
-// 2. Check if paldindrome
-// 		if yes: compare to max
-// return max
-
-bool isPalindrome(std::string entry)
-{
-	size_t n = entry.size();
-	if (n <= 1)
-	{
-		return true;
-	}
-	else if (entry[0] == entry[n - 1])
-	{
-		return isPalindrome(entry.substr(1, n - 2));
-	}
-	return false;
-}
 
 int main(int argc, char const *argv[])
 {
@@ -30,18 +10,72 @@ int main(int argc, char const *argv[])
 	std::cin >> entry;
 
 	size_t max = 0;
-	for (size_t start = 0; start < entry.size(); start++)
+	size_t len = 0;
+	size_t out = 0;
+
+	for (size_t i = 0; i < entry.size(); i++)
 	{
-		for (size_t len = 1; len < (entry.size() - start + 1); len++)
+		// state = false;
+		len = 0;
+		out = 0;
+		if (i - 1 >= 0 && i + 1 < entry.size() && entry[i - 1] == entry[i + 1])
 		{
-			std::string sub = entry.substr(start, len);
-			if (isPalindrome(sub) && sub.size() > max)
+			len += 3;
+			out++;
+
+			while (true)
 			{
-				// std::cout << sub << ": " << sub.size() << '\n';
-				max = sub.size();
+				if ((i - 1 - out) >= 0 && (i + 1 + out) < entry.size() && entry[i - 1 - out] == entry[i + 1 + out])
+				{
+					len += 2;
+					out++;
+				}
+				else
+				{
+					break;
+				}
 			}
 		}
+		else
+		{
+			len = 1;
+		}
+		if (len > max)
+		{
+			max = len;
+		}
+		// state = true;
+		len = 0;
+		out = 0;
+		if (i - 1 >= 0 && i < entry.size() && entry[i - 1] == entry[i])
+		{
+			len += 2;
+			out++;
+
+			while (true)
+			{
+				if ((i - 1 - out) >= 0 && (i + out) < entry.size() && entry[i - 1 - out] == entry[i + out])
+				{
+					len += 2;
+					out++;
+				}
+				else
+				{
+					break;
+				}
+			}
+		}
+		else
+		{
+			len = 1;
+		}
+
+		if (len > max)
+		{
+			max = len;
+		}
 	}
+
 	std::cout << max << '\n';
 	return 0;
 }
